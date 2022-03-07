@@ -74,7 +74,7 @@ char* generatePassword() {
 		exit(-1);
 	}
 
-	srand(time(0));
+	srand(time(NULL));
 
 	int passwordLength = rand() % 5 + 10;
 
