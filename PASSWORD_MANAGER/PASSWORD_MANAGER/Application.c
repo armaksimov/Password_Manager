@@ -79,7 +79,7 @@ char* generatePassword() {
 	int passwordLength = rand() % 5 + 10;
 
 	for (int i = 0; i < passwordLength; i++) {
-		*(password + i) = rand() % 94 + 33; // generates a number between 33 and 126
+		*(password + i) = rand() % 92 + 33; // generates a number between 33 and 124
 	}
 
 	if (checkPasswordStrength(password) < 7) {
