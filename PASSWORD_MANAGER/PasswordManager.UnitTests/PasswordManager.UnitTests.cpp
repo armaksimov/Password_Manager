@@ -101,17 +101,17 @@ namespace PasswordManagerUnitTests
 		TEST_METHOD(T016_initApplication_appname_username_password_appname) {
 			// In this test case it is tested that initApplication() saves value of appName to pApplication structure properly
 			pApplication app = initApplication("appname", "username", "password");
-			Assert::AreEqual(app->appName, "appname");
+			Assert::AreEqual("appname", app->appName);
 		}
 		TEST_METHOD(T017_initApplication_appname_someUsername_password_appname) {
 			// In this test case it is tested that initApplication() saves value of username to pApplication structure properly
 			pApplication app = initApplication("appname", "someUsername", "password");
-			Assert::AreEqual(app->username, "someUsername");
+			Assert::AreEqual("someUsername", app->username);
 		}
 		TEST_METHOD(T018_initApplication_appname_someUsername_somePassword_appname) {
 			// In this test case it is tested that initApplication() saves value of username to pApplication structure properly
 			pApplication app = initApplication("appname", "someUsername", "somePassword");
-			Assert::AreEqual(app->password, "somePassword");
+			Assert::AreEqual("somePassword", app->password);
 		}
 	};
 	TEST_CLASS(NodeUnitTests) {
@@ -119,17 +119,17 @@ namespace PasswordManagerUnitTests
 		TEST_METHOD(T001_initNode_appname_username_password_appname) {
 			// In this test case it is tested that initNode() saves value of appName to pApplication structure in pNode properly
 			pNode node = initNode("appname", "username", "password");
-			Assert::AreEqual(node->data->appName, "appname");
+			Assert::AreEqual("appname", node->data->appName);
 		}
-		TEST_METHOD(T002_initNode_appname_someUsername_password_appname) {
+		TEST_METHOD(T002_initNode_appname_someUsername_password_someUsername) {
 			// In this test case it is tested that initNode() saves value of username to pApplication structure in pNode properly
 			pNode node = initNode("appname", "someUsername", "password");
-			Assert::AreEqual(node->data->username, "someUsername");
+			Assert::AreEqual("someUsername", node->data->username);
 		}
-		TEST_METHOD(T003_initNode_appname_someUsername_somePassword_appname) {
+		TEST_METHOD(T003_initNode_appname_someUsername_somePassword_somePassword) {
 			// In this test case it is tested that initNode() saves value of username to pApplication structure in pNode properly
 			pNode node = initNode("appname", "someUsername", "somePassword");
-			Assert::AreEqual(node->data->password, "somePassword");
+			Assert::AreEqual("somePassword", node->data->password);
 		}
 
 		TEST_METHOD(T004_linkNext_appname_username_password_appname) {
@@ -137,21 +137,21 @@ namespace PasswordManagerUnitTests
 			pNode n = createNode();
 			pNode node = initNode("appname", "username", "password");
 			linkNext(n, node);
-			Assert::AreEqual(n->next->data->appName, "appname");
+			Assert::AreEqual("appname", n->next->data->appName);
 		}
-		TEST_METHOD(T005_linkNext_appname_someUsername_password_appname) {
+		TEST_METHOD(T005_linkNext_appname_someUsername_password_someUsername) {
 			// In this test case it is tested that linkNext() links two pNodes properly and values can be retracted with a call to .next
 			pNode n = createNode();
 			pNode node = initNode("appname", "someUsername", "password");
 			linkNext(n, node);
-			Assert::AreEqual(n->next->data->username, "someUsername");
+			Assert::AreEqual("someUsername", n->next->data->username);
 		}
-		TEST_METHOD(T006_linkNext_appname_someUsername_somePassword_appname) {
+		TEST_METHOD(T006_linkNext_appname_someUsername_somePassword_somePassword) {
 			// In this test case it is tested that linkNext() links two pNodes properly and values can be retracted with a call to .next
 			pNode n = createNode();
 			pNode node = initNode("appname", "someUsername", "somePassword");
 			linkNext(n, node);
-			Assert::AreEqual(n->next->data->password, "somePassword");
+			Assert::AreEqual("somePassword", n->next->data->password);
 		}
 	};
 }
