@@ -154,4 +154,179 @@ namespace PasswordManagerUnitTests
 			Assert::AreEqual("somePassword", n->next->data->password);
 		}
 	};
+	TEST_CLASS(LinkedListUnitTests) {
+	public:
+		TEST_METHOD(T001_add_3nodesList_node2AppNameCheck) {
+			// This uni test is designed to test if the pApplications are correctly formed and added to the linked list with the use of add() function.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+
+			Assert::AreEqual("appname1", (*(l->list + 1))->data->appName);
+		}
+		TEST_METHOD(T002_add_3nodesList_node1NextUsernameCheck) {
+			// This uni test is designed to test if the pApplications are correctly formed, added to the linked list, and linked between each other with the use of add() function.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+
+			Assert::AreEqual("username1", (*(l->list + 0))->next->data->username);
+		}
+		TEST_METHOD(T003_add_3nodesList_node1NextNextPasswordCheck) {
+			// This uni test is designed to test if the pApplications are correctly formed, added to the linked list, and linked between each other with the use of add() function.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+
+			Assert::AreEqual("password2", (*(l->list + 0))->next->next->data->password);
+		}
+
+		TEST_METHOD(T004_search_3nodesList_node1) {
+			// This test case is designed to check if find() function works properly and returns the exact position of the searched pApplication.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+
+			Assert::AreEqual(1, search(l, "appname1", "username1"));
+		}
+		TEST_METHOD(T005_search_5nodesList_node4) {
+			// This test case is designed to check if find() function works properly and returns the exact position of the searched pApplication.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			Assert::AreEqual(4, search(l, "appName4", "username4"));
+		}
+		TEST_METHOD(T006_search_5nodesList_neg1) {
+			// This test case is designed to check if find() function works properly and returns the exact position of the searched pApplication.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			Assert::AreEqual(-1, search(l, "app8", "user8"));
+		}
+
+		TEST_METHOD(T007_removeNode_5nodesListRemove2nd_checkMoving) {
+			// This test case is designed to check if removeNode() function works properly and reconstructs list correctly.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			removeNode(l, 2);
+
+			Assert::AreEqual("appname3", (*(l->list + 2))->data->appName);
+		}
+		TEST_METHOD(T008_removeNode_5nodesListRemove1st_checkMovingNext) {
+			// This test case is designed to check if removeNode() function works properly and reconstructs list correctly.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			removeNode(l, 1);
+
+			Assert::AreEqual("appname3", (*(l->list + 1))->next->data->appName);
+		}
+
+		TEST_METHOD(T009_checkPassword_5nodesListQWERTY_DUPLICATES_PASSWORD) {
+			// This test case is designed to check if checkPassword() function detects password duplicates properly.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "QWERTY");
+			add(l, "appName4", "username4", "password4");
+
+			int expected = DUPLICATES_PASSWORD;
+			int actual = checkPassword(l, "QWERTY");
+
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(T010_checkPassword_5nodesListQWERTY_NOT_A_DUPLICATE) {
+			// This test case is designed to check if checkPassword() function detects password duplicates properly.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			int expected = NOT_A_DUPLICATE;
+			int actual = checkPassword(l, "QWERTY");
+
+			Assert::AreEqual(expected, actual);
+		}
+		
+		TEST_METHOD(T011_checkDuplicates_5nodesList_DUPLICATES) {
+			// This test case is designed to check if checkDuplicates() function detects full duplicates properly.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			int expected = DUPLICATES;
+			int actual = checkDuplicates(l, "appName2", "username2", "password2");
+
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(T012_checkDuplicates_5nodesList_DUPLICATES_APP_USERNAME) {
+			// This test case is designed to check if checkDuplicates() function detects duplicates of appname and username properly.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			int expected = DUPLICATES_APP_USERNAME;
+			int actual = checkDuplicates(l, "appName2", "username2", "QWERTY");
+
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(T013_checkDuplicates_5nodesList_DUPLICATES_PASSWORD) {
+			// This test case is designed to check if checkDuplicates() function detects password duplicates properly.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			int expected = DUPLICATES_PASSWORD;
+			int actual = checkDuplicates(l, "app", "user", "password3");
+
+			Assert::AreEqual(expected, actual);
+		}
+		TEST_METHOD(T014_checkDuplicates_5nodesList_NOT_A_DUPLICATE) {
+			// This test case is designed to check if checkDuplicates() function detects that there are no duplicates properly.
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			int expected = NOT_A_DUPLICATE;
+			int actual = checkDuplicates(l, "app", "user", "pass");
+
+			Assert::AreEqual(expected, actual);
+		}
+	};
 }
