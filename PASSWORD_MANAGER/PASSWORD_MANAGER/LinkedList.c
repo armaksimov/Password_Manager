@@ -58,30 +58,28 @@ pNode peekFirst(pLinkedList list) {
 	return peek(list, 0);
 }
 
-pApplication removeNode(pLinkedList list, char* appName, char* username) {
-	pApplication app = NULL;
-	for (int i = 0; i < getSize(list); i++) {
-		if (strncmp((*(list->list + i))->data->appName, appName, APPNAME_LENGTH) == 0 && strncmp((*(list->list + i))->data->username, username, USERNAME_LENGTH) == 0) {
-			app = (*(list->list + i))->data;
-			for (int j = i + 1; j < getSize(list) - 1; j++) {
-				*(list->list + i) = *(list->list + j);
-				linkNext(*(list->list + i), *(list->list + j));
-			}
-			list->size--;
-			deleteNode(*(list->list + list->size));
-			list->list = (pNode*)realloc(list->list, (list->size * sizeof(pNode)));
-		}
+pApplication removeNode(pLinkedList list, int index) {
+	pApplication app = (*(list->list + index))->data;
+
+	for (int j = index + 1; j < getSize(list) - 1; j++) {
+		*(list->list + index) = *(list->list + j);
+		linkNext(*(list->list + index), *(list->list + j));
 	}
+
+	list->size--;
+	deleteNode(*(list->list + list->size));
+	list->list = (pNode*)realloc(list->list, (list->size * sizeof(pNode)));
+
 	return app;
 }
 
-pApplication search(pLinkedList list, char* appName, char* username) {
+int search(pLinkedList list, char* appName, char* username) {
 	for (int i = 0; i < getSize(list); i++) {
 		if (strncmp((*(list->list + i))->data->appName, appName, APPNAME_LENGTH) == 0 && strncmp((*(list->list + i))->data->username, username, USERNAME_LENGTH) == 0) {
-			return (*(list->list + i))->data;
+			return i;
 		}
 	}
-	return NULL;
+	return -1;
 }
 
 DUPLICATE checkPassword(pLinkedList list, char* password) {
@@ -94,19 +92,25 @@ DUPLICATE checkPassword(pLinkedList list, char* password) {
 }
 
 DUPLICATE checkDuplicates(pLinkedList list, char* appName, char* username, char* password) {
-	pApplication app = search(list, appName, username);
+	int index = search(list, appName, username);
 
-	if (app && strncmp(app->password, password, PASSWORD_LENGTH) == 0) {
-		return DUPLICATES;
-	}
-	else if (app) {
-		return DUPLICATES_APP_USERNAME;
-	}
-	else if (checkPassword(list, password) == DUPLICATES_PASSWORD) {
-		return DUPLICATES_PASSWORD;
+	if (index != -1) {
+		pApplication app = (*(list->list + index))->data;
+
+		if (app && strncmp(app->password, password, PASSWORD_LENGTH) == 0) {
+			return DUPLICATES;
+		}
+		else if (app) {
+			return DUPLICATES_APP_USERNAME;
+		}
 	}
 	else {
-		return NOT_A_DUPLICATE;
+		if (checkPassword(list, password) == DUPLICATES_PASSWORD) {
+			return DUPLICATES_PASSWORD;
+		}
+		else {
+			return NOT_A_DUPLICATE;
+		}
 	}
 }
 

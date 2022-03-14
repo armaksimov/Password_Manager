@@ -31,9 +31,7 @@ void linkNext(pNode n, pNode next) {
 void deleteNode(pNode n) {
 	deleteApplication(n->data);
 
-	free(n->next);
 	n->next = NULL;
 
-	free(n);
 	n = NULL;
 }

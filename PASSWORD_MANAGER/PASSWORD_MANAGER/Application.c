@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,26 +37,26 @@ pApplication createApplication() {
 pApplication initApplication(char* appName, char* username, char* pass) {
 	pApplication app = createApplication();
 
-	app->appName = appName;
-	app->username = username;
-	app->password = pass;
+	strncpy(app->appName, appName, APPNAME_LENGTH);
+	strncpy(app->username, username, USERNAME_LENGTH);
+	strncpy(app->password, pass, PASSWORD_LENGTH);
 
 	return app;
 }
 
 
 void setAppName(pApplication app, char* newAppName) {
-	app->appName = newAppName;
+	strncpy(app->appName, newAppName, APPNAME_LENGTH);
 }
 
 
 void setUsername(pApplication app, char* newUsername) {
-	app->username = newUsername;
+	strncpy(app->username, newUsername, USERNAME_LENGTH);
 }
 
 
 void setPassword(pApplication app, char* newPassword) {
-	app->password = newPassword;
+	strncpy(app->password, newPassword, PASSWORD_LENGTH);
 }
 
 
@@ -172,7 +173,6 @@ int checkPasswordStrength(char* pass) {
 	return strengthLevel;
 }
 
-
 void deleteApplication(pApplication app) {
 	free(app->appName);
 	app->appName = NULL;
@@ -183,6 +183,6 @@ void deleteApplication(pApplication app) {
 	free(app->password);
 	app->password = NULL;
 
-	free(app);
 	app = NULL;
+	return;
 }

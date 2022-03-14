@@ -23,11 +23,11 @@ pNode peekLast(pLinkedList list);
 // This function is designed to return the first member (pNode) from the linked list (instance of pLinkedList).
 pNode peekFirst(pLinkedList list);
 
-// This function is designed to delete the matching (by appName & username) member (pNode) from the linked list (instance of pLinkedList) and return it for further printing.
-pApplication removeNode(pLinkedList list, char* appName, char* username);
+// This function is designed to delete the node by passed index and return it for further printing.
+pApplication removeNode(pLinkedList list, int index);
 
-// This function is designed to find the member (pNode) in the linked list (instance of pLinkedList) by the app name.
-pApplication search(pLinkedList list, char* appName, char* username);
+// This function is designed to find the member (pNode) in the linked list (instance of pLinkedList) by the app name and return its position in the list.
+int search(pLinkedList list, char* appName, char* username);
 
 // This function is designed to check if the password repeats in any of applications in the list.
 DUPLICATE checkPassword(pLinkedList list, char* password);
