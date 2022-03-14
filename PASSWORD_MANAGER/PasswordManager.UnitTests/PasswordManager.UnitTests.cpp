@@ -329,4 +329,45 @@ namespace PasswordManagerUnitTests
 			Assert::AreEqual(expected, actual);
 		}
 	};
+	TEST_CLASS(EncryptionUnitTests) {
+		TEST_METHOD(T001_encrypt_appNameUsernamePassword) {
+			// This test case is designed to check if the encrypt() function works properly.
+			pApplication app = initApplication("appName", "username", "password");
+			
+			Assert::AreEqual("appName~tvrtdfqsmo`blndf~oq`brtrtvxnpqsce", encrypt(app));
+		}
+		TEST_METHOD(T002_encrypt_abcDEFghi) {
+			// This test case is designed to check if the encrypt() function works properly.
+			pApplication app = initApplication("abc", "DEF", "ghi");
+
+			Assert::AreEqual("abc~CEDFEG~fhgihj", encrypt(app));
+		}
+		TEST_METHOD(T003_encrypt_abcQW3rt7) {
+			// This test case is designed to check if the encrypt() function works properly.
+			pApplication app = initApplication("abc", "QW3", "rt7");
+
+			Assert::AreEqual("abc~PRVX24~qssu68", encrypt(app));
+		}
+		TEST_METHOD(T004_decrypt_abcPRVX24qssu68) {
+			// This test case is designed to check if the decrypt() function works properly.
+			pApplication app = initApplication("abc", "PRVX24", "qssu68");
+			decrypt(app);
+
+			Assert::IsTrue(strcmp(app->appName, "abc") == 0 && strcmp(app->username, "QW3") == 0 && strcmp(app->password, "rt7") == 0);
+		}
+		TEST_METHOD(T005_decrypt_abcCEDFEGfhgihj) {
+			// This test case is designed to check if the decrypt() function works properly.
+			pApplication app = initApplication("abc", "CEDFEG", "fhgihj");
+			decrypt(app);
+
+			Assert::IsTrue(strcmp(app->appName, "abc") == 0 && strcmp(app->username, "DEF") == 0 && strcmp(app->password, "ghi") == 0);
+		}
+		TEST_METHOD(T006_decrypt_longStringsTest) {
+			// This test case is designed to check if the decrypt() function works properly.
+			pApplication app = initApplication("appName", "tvrtdfqsmo`blndf", "oq`brtrtvxnpqsce");
+			decrypt(app);
+
+			Assert::IsTrue(strcmp(app->appName, "appName") == 0 && strcmp(app->username, "username") == 0 && strcmp(app->password, "password") == 0);
+		}
+	};
 }
