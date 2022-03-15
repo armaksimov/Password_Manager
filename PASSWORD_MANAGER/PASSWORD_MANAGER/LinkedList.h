@@ -38,6 +38,12 @@ DUPLICATE checkDuplicates(pLinkedList list, char* appName, char* username, char*
 // This function returns the size of the linked list.
 int getSize(pLinkedList list);
 
+// This function is designed to encrypt the contents of the linked list and write everyting to the file
+void writeToFile(char* fileName, pLinkedList list);
+
+// This function is designed to read the contents of the text file and decrpt them
+pLinkedList readFromFile(char* fileName);
+
 // This function is designed to remove every member of the linked list.
 void clear(pLinkedList list);
 

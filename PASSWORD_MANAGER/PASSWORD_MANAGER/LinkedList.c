@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "LinkedList.h"
+#include "Encryption.h"
 
 pLinkedList createLinkedList() {
 	pLinkedList l = (pLinkedList)malloc(sizeof(pLinkedList));
@@ -116,6 +117,65 @@ DUPLICATE checkDuplicates(pLinkedList list, char* appName, char* username, char*
 
 int getSize(pLinkedList list) {
 	return list->size;
+}
+
+void writeToFile(char* fileName, pLinkedList list) {
+	FILE* fptr;
+	fptr = fopen(fileName, "w");
+
+	if (fptr == NULL) {
+		fprintf(stderr, "Error openning %s file!\n", fileName);
+		exit(1);
+	}
+
+	for (int i = 0; i < list->size; i++) {
+		fprintf(fptr, "%s\n", encrypt((*(list->list))->data));
+	}
+
+	fclose(fptr);
+}
+
+pLinkedList readFromFile(char* fileName) {
+	FILE* fptr;
+	fptr = fopen(fileName, "r");
+
+	if (fptr == NULL) {
+		fprintf(stderr, "Error openning %s file!\n", fileName);
+		exit(1);
+	}
+
+	pLinkedList list = createLinkedList();
+	if (!list) {
+		fprintf(stderr, "Error allocating memory\n");
+		exit(1);
+	}
+
+	char ch;
+	int lines = 0;
+	while (!feof(fptr))
+	{
+		ch = fgetc(fptr);
+		if (ch == '\n')
+		{
+			lines++;
+		}
+	}
+	fseek(fptr, 0, SEEK_SET);
+
+	for (int i = 0; i < lines; i++) {
+		char* appname = "";
+		char* username = "";
+		char* password = "";
+		fscanf_s(fptr, "\n%[^~]s", appname, APPNAME_LENGTH);
+		fscanf_s(fptr, "~%[^~]s", username, USERNAME_LENGTH);
+		fscanf_s(fptr, "~%[^\n]s", password, PASSWORD_LENGTH);
+
+		add(list, appname, username, password);
+		decrypt((*(list->list))->data);
+	}
+
+	fclose(fptr);
+	return list;
 }
 
 void clear(pLinkedList list) {
