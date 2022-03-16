@@ -129,7 +129,7 @@ void writeToFile(char* fileName, pLinkedList list) {
 	}
 
 	for (int i = 0; i < list->size; i++) {
-		fprintf(fptr, "%s\n", encrypt((*(list->list))->data));
+		fprintf(fptr, "%s\n", encrypt((*(list->list + i))->data));
 	}
 
 	fclose(fptr);
@@ -163,15 +163,15 @@ pLinkedList readFromFile(char* fileName) {
 	fseek(fptr, 0, SEEK_SET);
 
 	for (int i = 0; i < lines; i++) {
-		char* appname = "";
-		char* username = "";
-		char* password = "";
+		char appname[APPNAME_LENGTH];
+		char username[USERNAME_LENGTH];
+		char password[PASSWORD_LENGTH];
 		fscanf_s(fptr, "\n%[^~]s", appname, APPNAME_LENGTH);
 		fscanf_s(fptr, "~%[^~]s", username, USERNAME_LENGTH);
 		fscanf_s(fptr, "~%[^\n]s", password, PASSWORD_LENGTH);
 
 		add(list, appname, username, password);
-		decrypt((*(list->list))->data);
+		decrypt((*(list->list + i))->data);
 	}
 
 	fclose(fptr);

@@ -370,4 +370,45 @@ namespace PasswordManagerUnitTests
 			Assert::IsTrue(strcmp(app->appName, "appName") == 0 && strcmp(app->username, "username") == 0 && strcmp(app->password, "password") == 0);
 		}
 	};
+	TEST_CLASS(FileIOUnitTests) {
+		TEST_METHOD(T001_FileIO_check3rdElement) {
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			writeToFile("C:\\Users\\armak\\source\\repos\\Password_Manager\\PASSWORD_MANAGER\\PASSWORD_MANAGER\\textlog.txt", l);
+			pLinkedList list = readFromFile("C:\\Users\\armak\\source\\repos\\Password_Manager\\PASSWORD_MANAGER\\PASSWORD_MANAGER\\textlog.txt");
+
+			Assert::IsTrue(strcmp((*(list->list + 3))->data->appName, "appname3") == 0 && strcmp((*(list->list + 3))->data->username, "username3") == 0 && strcmp((*(list->list + 3))->data->password, "password3") == 0);
+		}
+		TEST_METHOD(T002_FileIO_check0ElementNext) {
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			writeToFile("C:\\Users\\armak\\source\\repos\\Password_Manager\\PASSWORD_MANAGER\\PASSWORD_MANAGER\\textlog.txt", l);
+			pLinkedList list = readFromFile("C:\\Users\\armak\\source\\repos\\Password_Manager\\PASSWORD_MANAGER\\PASSWORD_MANAGER\\textlog.txt");
+
+			Assert::IsTrue(strcmp((*(list->list + 0))->next->data->appName, "appname1") == 0 && strcmp((*(list->list + 0))->next->data->username, "username1") == 0 && strcmp((*(list->list + 0))->next->data->password, "password1") == 0);
+		}
+		TEST_METHOD(T003_FileIO_check1stElementNextNext) {
+			pLinkedList l = createLinkedList();
+			add(l, "appname", "username", "password");
+			add(l, "appname1", "username1", "password1");
+			add(l, "appName2", "username2", "password2");
+			add(l, "appname3", "username3", "password3");
+			add(l, "appName4", "username4", "password4");
+
+			writeToFile("C:\\Users\\armak\\source\\repos\\Password_Manager\\PASSWORD_MANAGER\\PASSWORD_MANAGER\\textlog.txt", l);
+			pLinkedList list = readFromFile("C:\\Users\\armak\\source\\repos\\Password_Manager\\PASSWORD_MANAGER\\PASSWORD_MANAGER\\textlog.txt");
+
+			Assert::IsTrue(strcmp((*(list->list + 1))->next->next->data->appName, "appname3") == 0 && strcmp((*(list->list + 1))->next->next->data->username, "username3") == 0 && strcmp((*(list->list + 1))->next->next->data->password, "password3") == 0);
+		}
+	};
 }
